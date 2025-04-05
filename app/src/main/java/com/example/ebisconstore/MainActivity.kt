@@ -10,9 +10,11 @@ import com.example.ebisconstore.auth.LoginViewModel
 import com.example.ebisconstore.auth.UserRepository
 //import com.example.ebisconstore.auth.api
 import com.example.ebisconstore.ui.theme.EbisconStoreTheme
+import dagger.hilt.android.AndroidEntryPoint
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

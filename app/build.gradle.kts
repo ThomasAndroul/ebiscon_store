@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.hiltPlugin)
+    kotlin("kapt")
 }
 
 android {
@@ -67,6 +69,15 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson.converter)
+    implementation(libs.coil.compose)
+    implementation(libs.hilt.android)
+    implementation (libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+    implementation(libs.androidx.appcompat)
+    kapt(libs.hilt.compiler)
+    kapt(libs.dagger.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

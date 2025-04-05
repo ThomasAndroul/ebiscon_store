@@ -2,7 +2,6 @@ package com.example.ebisconstore
 
 import android.widget.Toast
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -10,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.ebisconstore.auth.LoginScreen
 import com.example.ebisconstore.auth.LoginViewModel
+import com.example.ebisconstore.category.CategoryScreen
 
 @Composable
 fun Navigation(
