@@ -1,0 +1,4 @@
+package com.example.ebisconstore.auth
+
+object RetrofitInstance {
+}

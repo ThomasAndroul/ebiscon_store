@@ -1,0 +1,46 @@
+package com.example.ebisconstore.auth
+
+import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModel
+import androidx.compose.runtime.State
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import java.lang.Error
+
+class LoginViewModel() : ViewModel() {
+
+    data class LoginState(
+        val loading: Boolean = true,
+        val list: List<User> = emptyList(),
+        val error: String? = null
+    )
+
+    private val _loginState = mutableStateOf(LoginState())
+    var loginState: State<LoginState> = _loginState
+
+    init {
+        fetchUsers()
+        Log.d("LoginViewModel","Fetched users: ${loginState.value.list}")
+    }
+
+    private fun fetchUsers() {
+        viewModelScope.launch {
+            try {
+                _loginState.value = loginState.value.copy(loading = true)
+                val response = apiService.getUsers()
+                _loginState.value = loginState.value.copy(list = response, loading = false)
+            } catch (e: Error) {
+                _loginState.value = loginState.value.copy(error = e.message, loading = false)
+            }
+        }
+    }
+    fun login(username: String, password: String): Boolean {
+        val users = loginState.value.list
+        Log.d("LoginViewModel","Fetched users: $users")
+        return users.any { it.username == username && it.password == password }
+    }
+}

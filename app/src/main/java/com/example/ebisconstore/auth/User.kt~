@@ -1,0 +1,10 @@
+package com.example.ebisconstore.auth
+
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+data class User(
+    @SerializedNameval username: String,
+    val password: String
+): Parcelable
