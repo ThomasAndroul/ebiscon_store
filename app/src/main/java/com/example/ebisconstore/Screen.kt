@@ -6,4 +6,5 @@ sealed class Screen(
     data object App : Screen("app")
     data object LoginScreen : Screen("login_screen")
     data object CategoryScreen : Screen("category_screen")
+    data object ProductScreen : Screen("product_screen")
 }

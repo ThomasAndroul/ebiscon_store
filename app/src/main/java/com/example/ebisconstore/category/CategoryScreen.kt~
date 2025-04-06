@@ -27,6 +27,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 fun CategoryScreen(
     uiState: ProductUIState,
     navigateToCategory: (String) -> Unit,
+    navigateToAllProducts: () -> Unit
 ) {
 
     Column(
@@ -72,7 +73,7 @@ fun CategoryScreen(
                     }
 
                     ProductsCardView(
-                        navigateToCategory = navigateToCategory
+                        navigateToAllProducts = navigateToAllProducts
                     )
                 }
             }
