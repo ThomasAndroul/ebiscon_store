@@ -2,6 +2,7 @@ package com.example.ebisconstore.category
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,12 +30,14 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun ProductsView(
-    product : Product
+    product : Product,
+    navigateToDetail : (Product) -> Unit
 ){
     ElevatedCard(
         modifier = Modifier
             .padding(8.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable { navigateToDetail(product) },
         shape = RoundedCornerShape(8.dp),
         elevation = CardDefaults.elevatedCardElevation(4.dp),
         colors = CardDefaults.elevatedCardColors(
@@ -125,5 +128,7 @@ fun ProductsViewPreview() {
             rate = 4.5,
             count = 10
         )
-    ))
+    ),
+        navigateToDetail = {}
+    )
 }

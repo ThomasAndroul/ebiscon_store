@@ -43,4 +43,28 @@ class ProductsViewModel @Inject constructor(
             }
         }
     }
+    fun updateProduct(
+        product: Product,
+        refetch: Boolean = false,
+        onSuccess: () -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val updatedProduct = productRepository.updateProduct(product)
+
+                if (refetch) {
+                    fetchProducts()
+                } else {
+                    val updatedList = _uiState.value.products.map {
+                        if (it.id == product.id) updatedProduct else it
+                    }
+                    _uiState.value = _uiState.value.copy(products = updatedList)
+                }
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e.message ?: "Unknown error")
+            }
+        }
+    }
 }

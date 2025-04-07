@@ -1,6 +1,5 @@
 package com.example.ebisconstore.category
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,7 +19,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun ProductScreen(
     uiState: ProductUIState,
-    category: String
+    category: String,
+    navigateToDetail : (Product) -> Unit
 ) {
     var products = uiState.products.filter { it.category == category }
     if(category == "All Products") {
@@ -57,7 +57,10 @@ fun ProductScreen(
                     ) {
                         items(products){
                                 product ->
-                            ProductsView(product = product)
+                            ProductsView(
+                                product = product,
+                                navigateToDetail = navigateToDetail
+                            )
                         }
                     }
                 }

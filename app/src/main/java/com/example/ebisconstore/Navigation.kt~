@@ -74,6 +74,7 @@ fun Navigation(
                 ?: return@composable
 
             ProductDetailScreen(
+                productsViewModel = viewModel,
                 product = product,
                 updateProduct = { updatedProduct, refetch, onSuccess, onError ->
                     viewModel.updateProduct(updatedProduct, refetch, onSuccess, onError)
