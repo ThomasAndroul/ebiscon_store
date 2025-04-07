@@ -59,7 +59,9 @@ fun LoginScreen(
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black
+                        unfocusedBorderColor = Color.Black,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     )
                 )
 
@@ -77,7 +79,9 @@ fun LoginScreen(
                     visualTransformation = PasswordVisualTransformation(),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = Color.Black,
-                        unfocusedBorderColor = Color.Black
+                        unfocusedBorderColor = Color.Black,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     )
                 )
                 Spacer(modifier = Modifier.height(16.dp))

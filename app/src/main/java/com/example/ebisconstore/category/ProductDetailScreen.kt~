@@ -68,7 +68,7 @@ fun ProductDetailScreen(
                 TextField(
                     value = currentValue,
                     onValueChange = { currentValue = it },
-                    singleLine = currentField != "description"
+                    singleLine = currentField != "description" // multiline for description
                 )
             },
             confirmButton = {

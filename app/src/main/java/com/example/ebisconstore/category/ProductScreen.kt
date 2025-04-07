@@ -1,12 +1,14 @@
 package com.example.ebisconstore.category
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -15,56 +17,66 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ebisconstore.ESToAppBar
+import java.util.Locale
 
 @Composable
 fun ProductScreen(
     uiState: ProductUIState,
     category: String,
-    navigateToDetail : (Product) -> Unit
+    navigateToDetail : (Product) -> Unit,
+    onBack: () -> Unit
 ) {
     var products = uiState.products.filter { it.category == category }
     if(category == "All Products") {
         products = uiState.products
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text(
-            text = category,
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        when {
-            uiState.loading -> {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-            }
+    Scaffold(
+        contentWindowInsets = WindowInsets(0.dp),
+        containerColor = Color.White,
+        topBar = {
+            ESToAppBar(
+                title = category.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() },
+                onBack = { onBack() }
+            )
+        }
+    ){
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+                .padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            when {
+                uiState.loading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
 
-            uiState.error != null -> {
-                Text(text = uiState.error.toString(), color = Color.Red)
-            }
+                uiState.error != null -> {
+                    Text(text = uiState.error.toString(), color = Color.Red)
+                }
 
-            else -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(1),
+                else -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        items(products){
-                                product ->
-                            ProductsView(
-                                product = product,
-                                navigateToDetail = navigateToDetail
-                            )
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(1),
+                        ) {
+                            items(products){
+                                    product ->
+                                ProductsView(
+                                    product = product,
+                                    navigateToDetail = navigateToDetail
+                                )
+                            }
                         }
                     }
                 }
             }
         }
     }
+
 }

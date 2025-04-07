@@ -12,11 +12,9 @@ import androidx.navigation.compose.composable
 import com.example.ebisconstore.auth.LoginScreen
 import com.example.ebisconstore.auth.LoginViewModel
 import com.example.ebisconstore.category.CategoryScreen
-import com.example.ebisconstore.category.Product
 import com.example.ebisconstore.category.ProductDetailScreen
 import com.example.ebisconstore.category.ProductScreen
 import com.example.ebisconstore.category.ProductsViewModel
-import com.example.ebisconstore.category.Rating
 
 @Composable
 fun Navigation(
@@ -52,7 +50,8 @@ fun Navigation(
                 navigateToCategory = {
                     navController.currentBackStackEntry?.savedStateHandle?.set("category", it)
                     navController.navigate(Screen.ProductScreen.route)
-                }
+                },
+                onBack = { navController.popBackStack() }
             )
         }
         composable(Screen.ProductScreen.route) {
@@ -64,7 +63,8 @@ fun Navigation(
                 category = category,
                 navigateToDetail = { product ->
                     navController.navigate(Screen.ProductDetailScreen.route + "/${product.id}")
-                }
+                },
+                onBack = { navController.popBackStack() }
             )
         }
         composable(Screen.ProductDetailScreen.route + "/{productId}") { backStackEntry ->
@@ -78,7 +78,8 @@ fun Navigation(
                 updateProduct = { updatedProduct, refetch, onSuccess, onError ->
                     viewModel.updateProduct(updatedProduct, refetch, onSuccess, onError)
                 },
-                onBack = { navController.navigate(Screen.CategoryScreen.route) }
+                navigateToCategories = { navController.navigate(Screen.CategoryScreen.route) },
+                onBack = { navController.popBackStack() }
             )
         }
     }
