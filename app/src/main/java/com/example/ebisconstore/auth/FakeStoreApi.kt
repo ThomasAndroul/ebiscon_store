@@ -1,9 +1,9 @@
 package com.example.ebisconstore.auth
 
-import retrofit2.Response
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface FakeStoreApi {
-    @GET("users")
-    suspend fun getUsers(): List<User>
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginRequest): LoginResponse
 }

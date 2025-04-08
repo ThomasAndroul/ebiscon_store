@@ -1,5 +1,6 @@
 package com.example.ebisconstore.category
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,12 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ebisconstore.ESToAppBar
+import com.example.ebisconstore.auth.LoginViewModel
 
 @Composable
 fun CategoryScreen(
     uiState: ProductUIState,
     navigateToCategory: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    clearUserToken: () -> Unit
 ) {
 
     Scaffold(
@@ -86,6 +90,15 @@ fun CategoryScreen(
                         ProductsCardView(
                             navigateToCategory = navigateToCategory
                         )
+                        Button(
+                            onClick = {
+                                clearUserToken()
+                                Log.d("LoginScreen", "User token cleared. Please log in again.")
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text("Clear User Token")
+                        }
                     }
                 }
             }
@@ -99,6 +112,7 @@ fun CategoryScreenPreview() {
     CategoryScreen(
         uiState = ProductUIState(),
         navigateToCategory = {},
-        onBack = {}
+        onBack = {},
+        clearUserToken = {}
     )
 }

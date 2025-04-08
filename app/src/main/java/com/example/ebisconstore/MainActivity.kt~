@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ebisconstore.auth.FakeStoreApi
 import com.example.ebisconstore.auth.LoginViewModel
+import com.example.ebisconstore.auth.UserRepository
 //import com.example.ebisconstore.auth.api
 import com.example.ebisconstore.ui.theme.EbisconStoreTheme
 import dagger.hilt.android.AndroidEntryPoint

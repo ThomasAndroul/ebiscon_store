@@ -5,10 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.ebisconstore.auth.LoginScreen
 import com.example.ebisconstore.auth.LoginViewModel
 import com.example.ebisconstore.category.CategoryScreen
@@ -19,28 +18,33 @@ import com.example.ebisconstore.category.ProductsViewModel
 @Composable
 fun Navigation(
     viewModel: ProductsViewModel = hiltViewModel(),
-    loginState: LoginViewModel.LoginState,
-    navController: NavController,
-    loginViewModel: LoginViewModel
+    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-
+    val loginState by loginViewModel.loginState
     val context = LocalContext.current
+    val navController = rememberNavController()
     val uiState by viewModel.uiState
 
     NavHost(
-        navController = navController as NavHostController,
-        startDestination = Screen.LoginScreen.route
+        navController = navController,
+        startDestination = if (loginState.token != null) Screen.CategoryScreen.route else Screen.LoginScreen.route
     ) {
         composable(Screen.LoginScreen.route) {
             LoginScreen(
                 loginState = loginState,
                 onLogin = { username, password ->
-                    if (loginViewModel.login(username, password)) {
-                        navController.navigate(Screen.CategoryScreen.route)
-                    } else {
-                        Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    loginViewModel.login(
+                        username,
+                        password,
+                        onSuccess = {
+                            navController.navigate(Screen.CategoryScreen.route) {
+                                popUpTo(Screen.LoginScreen.route) { inclusive = true }
+                            }
+                        },
+                        onError = {
+                            Toast.makeText(context, "Invalid username or password", Toast.LENGTH_SHORT).show()
+                        }
+                    )
                 }
             )
         }
@@ -51,7 +55,8 @@ fun Navigation(
                     navController.currentBackStackEntry?.savedStateHandle?.set("category", it)
                     navController.navigate(Screen.ProductScreen.route)
                 },
-                onBack = { navController.popBackStack() }
+                onBack = { navController.popBackStack() },
+                clearUserToken = { loginViewModel.clearUserToken() }
             )
         }
         composable(Screen.ProductScreen.route) {

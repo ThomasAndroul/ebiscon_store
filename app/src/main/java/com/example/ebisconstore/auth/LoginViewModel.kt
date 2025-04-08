@@ -8,39 +8,58 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.compose.runtime.State
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.lang.Error
+import javax.inject.Inject
 
-class LoginViewModel() : ViewModel() {
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val userManager: UserManager
+) : ViewModel() {
 
     data class LoginState(
-        val loading: Boolean = true,
-        val list: List<User> = emptyList(),
+        val loading: Boolean = false,
+        val token: String? = null,
         val error: String? = null
     )
 
     private val _loginState = mutableStateOf(LoginState())
-    var loginState: State<LoginState> = _loginState
+    val loginState: State<LoginState> = _loginState
+
 
     init {
-        fetchUsers()
-        Log.d("LoginViewModel","Fetched users: ${loginState.value.list}")
-    }
-
-    private fun fetchUsers() {
         viewModelScope.launch {
-            try {
-                _loginState.value = loginState.value.copy(loading = true)
-                val response = apiService.getUsers()
-                _loginState.value = loginState.value.copy(list = response, loading = false)
-            } catch (e: Error) {
-                _loginState.value = loginState.value.copy(error = e.message, loading = false)
+            userManager.tokenFlow.collect { token ->
+                if (!token.isNullOrEmpty()) {
+                    _loginState.value = LoginState(loading = false, token = token)
+                } else {
+                    _loginState.value = LoginState(loading = false)
+                }
             }
         }
     }
-    fun login(username: String, password: String): Boolean {
-        val users = loginState.value.list
-        Log.d("LoginViewModel","Fetched users: $users")
-        return users.any { it.username == username && it.password == password }
+
+    fun login(username: String, password: String, onSuccess: () -> Unit, onError: () -> Unit) {
+        viewModelScope.launch {
+            _loginState.value = LoginState(loading = true)
+            try {
+                val response = apiService.login(LoginRequest(username, password))
+                val token = response.token
+
+                userManager.saveToken(token)
+                _loginState.value = LoginState(loading = false, token = token)
+                onSuccess()
+            } catch (e: Exception) {
+                _loginState.value = LoginState(loading = false, error = e.message)
+                onError()
+            }
+        }
+    }
+    fun clearUserToken() {
+        viewModelScope.launch {
+            userManager.clearToken()
+            _loginState.value = LoginState()
+        }
     }
 }

@@ -43,6 +43,7 @@ hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltA
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidx-hilt-lifecycle-viewmodel" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version = "1.0.0" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
