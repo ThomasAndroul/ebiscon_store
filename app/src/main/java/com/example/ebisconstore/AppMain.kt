@@ -1,5 +1,6 @@
 package com.example.ebisconstore
 
+import android.app.Application
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -15,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.ebisconstore.auth.LoginViewModel
 import com.example.ebisconstore.category.ProductsViewModel
+import dagger.hilt.android.HiltAndroidApp
 
 @Composable
 fun AppMain(){
@@ -36,4 +38,8 @@ fun AppMain(){
             )
         }
     }
+}
+
+@HiltAndroidApp
+class MyApplication: Application() {
 }

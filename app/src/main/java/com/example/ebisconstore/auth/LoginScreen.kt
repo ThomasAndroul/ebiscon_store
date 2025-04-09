@@ -22,6 +22,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.ebisconstore.auth.LoginScreenDimens.mediumGap
+import com.example.ebisconstore.auth.LoginScreenDimens.smallGap
+import com.example.ebisconstore.auth.LoginScreenDimens.tinyGap
 
 @Composable
 fun LoginScreen(
@@ -32,13 +35,13 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier.fillMaxSize().padding(mediumGap),
         verticalArrangement = Arrangement.Center
     ) {
         Text("Login", style = MaterialTheme.typography.titleLarge)
         Text("Type username and password to login.", style = MaterialTheme.typography.bodyLarge)
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(mediumGap))
 
         when{
             loginState.loading -> {
@@ -54,7 +57,7 @@ fun LoginScreen(
                     label = { Text("Username", color = Color.Black) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 8.dp),
+                        .padding(bottom = smallGap),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Text),
                     colors = OutlinedTextFieldDefaults.colors(
@@ -65,7 +68,7 @@ fun LoginScreen(
                     )
                 )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(tinyGap))
 
                 OutlinedTextField(
                     value = password,
@@ -73,7 +76,7 @@ fun LoginScreen(
                     label = { Text("Password", color = Color.Black) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 16.dp),
+                        .padding(bottom = mediumGap),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Password),
                     visualTransformation = PasswordVisualTransformation(),
@@ -84,7 +87,7 @@ fun LoginScreen(
                         unfocusedTextColor = Color.Black
                     )
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(mediumGap))
 
                 Button(
                     onClick = {
@@ -98,6 +101,12 @@ fun LoginScreen(
             }
         }
     }
+}
+
+object LoginScreenDimens {
+    val tinyGap = 4.dp
+    val smallGap = 8.dp
+    val mediumGap = 16.dp
 }
 
 @Preview(showBackground = true)

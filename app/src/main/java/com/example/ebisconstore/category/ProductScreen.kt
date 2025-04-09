@@ -18,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ebisconstore.ESToAppBar
+import com.example.ebisconstore.category.ProductScreenDimens.smallGap
+import com.example.ebisconstore.category.ProductScreenDimens.zeroGap
 import java.util.Locale
 
 @Composable
@@ -33,7 +35,7 @@ fun ProductScreen(
     }
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0.dp),
+        contentWindowInsets = WindowInsets(zeroGap),
         containerColor = Color.White,
         topBar = {
             ESToAppBar(
@@ -46,7 +48,7 @@ fun ProductScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(8.dp),
+                .padding(smallGap),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             when {
@@ -78,5 +80,9 @@ fun ProductScreen(
             }
         }
     }
+}
 
+object ProductScreenDimens {
+    val zeroGap = 0.dp
+    val smallGap = 8.dp
 }

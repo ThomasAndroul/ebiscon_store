@@ -35,6 +35,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.example.ebisconstore.ESToAppBar
+import com.example.ebisconstore.category.ProductDetailScreenDimens.imageSize
+import com.example.ebisconstore.category.ProductDetailScreenDimens.largeGap
+import com.example.ebisconstore.category.ProductDetailScreenDimens.largeText
+import com.example.ebisconstore.category.ProductDetailScreenDimens.mediumGap
+import com.example.ebisconstore.category.ProductDetailScreenDimens.mediumText
+import com.example.ebisconstore.category.ProductDetailScreenDimens.smallText
+import com.example.ebisconstore.category.ProductDetailScreenDimens.zeroGap
 
 @Composable
 fun ProductDetailScreen(
@@ -93,7 +100,7 @@ fun ProductDetailScreen(
     }
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0.dp),
+        contentWindowInsets = WindowInsets(zeroGap),
         containerColor = Color.White,
         topBar = {
             ESToAppBar(
@@ -105,7 +112,7 @@ fun ProductDetailScreen(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(mediumGap),
                 contentAlignment = Alignment.Center
             ) {
                 Button(
@@ -134,7 +141,7 @@ fun ProductDetailScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = mediumGap)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -144,14 +151,14 @@ fun ProductDetailScreen(
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(imageSize)
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(mediumGap))
 
             Text(
                 text = title,
-                fontSize = 24.sp,
+                fontSize = largeText,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black,
                 modifier = Modifier.clickable { openDialog("title", title) }
@@ -159,12 +166,12 @@ fun ProductDetailScreen(
 
             Text(
                 text = "$price €",
-                fontSize = 20.sp,
+                fontSize = mediumText,
                 color = Color.Gray,
                 modifier = Modifier.clickable { openDialog("price", price) }
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(mediumGap))
 
             Column(
                 modifier = Modifier
@@ -178,11 +185,11 @@ fun ProductDetailScreen(
                 Text(
                     text = category,
                     color = Color.Red,
-                    fontSize = 16.sp
+                    fontSize = smallText
                 )
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(mediumGap))
 
             Column(
                 modifier = Modifier
@@ -195,13 +202,23 @@ fun ProductDetailScreen(
                 )
                 Text(
                     text = description,
-                    fontSize = 16.sp
+                    fontSize = smallText
                 )
             }
 
-            Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(largeGap))
         }
     }
+}
+
+object ProductDetailScreenDimens {
+    val zeroGap = 0.dp
+    val mediumGap = 16.dp
+    val largeGap = 32.dp
+    val smallText = 16.sp
+    val mediumText = 20.sp
+    val largeText = 24.sp
+    val imageSize = 150.dp
 }
 
 @Preview(showBackground = true)

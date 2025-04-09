@@ -23,7 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.ebisconstore.ESToAppBar
-import com.example.ebisconstore.auth.LoginViewModel
+import com.example.ebisconstore.category.CategoryScreenDimens.mediumGap
+import com.example.ebisconstore.category.CategoryScreenDimens.smallGap
+import com.example.ebisconstore.category.CategoryScreenDimens.titleSize
+import com.example.ebisconstore.category.CategoryScreenDimens.zeroGap
 
 @Composable
 fun CategoryScreen(
@@ -34,7 +37,7 @@ fun CategoryScreen(
 ) {
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0.dp),
+        contentWindowInsets = WindowInsets(zeroGap),
         containerColor = Color.White,
         topBar = {
             ESToAppBar(
@@ -47,12 +50,12 @@ fun CategoryScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(8.dp),
+                .padding(smallGap),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = "Choose a category",
-                fontSize = 32.sp,
+                fontSize = titleSize,
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
@@ -75,7 +78,7 @@ fun CategoryScreen(
                             columns = GridCells.Fixed(2),
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 16.dp)
+                                .padding(top = mediumGap)
                         ) {
                             categories.forEach { (category) ->
                                 item {
@@ -86,7 +89,7 @@ fun CategoryScreen(
                                 }
                             }
                         }
-                        Spacer(modifier = Modifier.height(8.dp))
+                        Spacer(modifier = Modifier.height(smallGap))
                         ProductsCardView(
                             navigateToCategory = navigateToCategory
                         )
@@ -104,6 +107,13 @@ fun CategoryScreen(
             }
         }
     }
+}
+
+object CategoryScreenDimens {
+    val zeroGap = 0.dp
+    val smallGap = 8.dp
+    val mediumGap = 16.dp
+    val titleSize = 32.sp
 }
 
 @Preview(showBackground = true)

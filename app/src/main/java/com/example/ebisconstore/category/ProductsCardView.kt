@@ -17,20 +17,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.ebisconstore.category.ProductsCardViewDimens.cardElevation
+import com.example.ebisconstore.category.ProductsCardViewDimens.cardHeight
+import com.example.ebisconstore.category.ProductsCardViewDimens.cardRoundCorner
+import com.example.ebisconstore.category.ProductsCardViewDimens.smallGap
+import com.example.ebisconstore.category.ProductsCardViewDimens.smallText
 
 @Composable
 fun ProductsCardView(
     navigateToCategory: (String) -> Unit
 ) {
     Row(
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(smallGap)
     ) {
         Card(
             colors = CardDefaults.cardColors(containerColor = Color.Black),
-            modifier = Modifier.height(80.dp)
+            modifier = Modifier.height(cardHeight)
                 .clickable { navigateToCategory("All Products") },
-            shape = RoundedCornerShape(8.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            shape = RoundedCornerShape(cardRoundCorner),
+            elevation = CardDefaults.cardElevation(defaultElevation = cardElevation)
         ) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -38,13 +43,21 @@ fun ProductsCardView(
             ) {
                 Text(
                     text = "All Products",
-                    lineHeight = 16.sp,
-                    fontSize = 16.sp,
+                    lineHeight = smallText,
+                    fontSize = smallText,
                     color = Color.White
                 )
             }
         }
     }
+}
+
+object ProductsCardViewDimens {
+    val smallGap = 8.dp
+    val smallText = 16.sp
+    val cardElevation = 4.dp
+    val cardHeight = 80.dp
+    val cardRoundCorner = 8.dp
 }
 
 @Preview(showBackground = true)

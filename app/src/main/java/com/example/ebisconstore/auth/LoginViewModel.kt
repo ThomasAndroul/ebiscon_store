@@ -26,6 +26,7 @@ class LoginViewModel @Inject constructor(
 
     private val _loginState = mutableStateOf(LoginState())
     val loginState: State<LoginState> = _loginState
+    val TAG = "LoginViewModel"
 
 
     init {
@@ -46,6 +47,7 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = apiService.login(LoginRequest(username, password))
                 val token = response.token
+                Log.d(TAG, "Token: $token")
 
                 userManager.saveToken(token)
                 _loginState.value = LoginState(loading = false, token = token)

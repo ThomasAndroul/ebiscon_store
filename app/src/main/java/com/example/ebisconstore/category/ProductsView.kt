@@ -27,6 +27,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
+import com.example.ebisconstore.category.ProductsViewDimens.cardElevation
+import com.example.ebisconstore.category.ProductsViewDimens.imageSize
+import com.example.ebisconstore.category.ProductsViewDimens.mediumGap
+import com.example.ebisconstore.category.ProductsViewDimens.mediumText
+import com.example.ebisconstore.category.ProductsViewDimens.roundCorner
+import com.example.ebisconstore.category.ProductsViewDimens.smallGap
+import com.example.ebisconstore.category.ProductsViewDimens.smallText
+import com.example.ebisconstore.category.ProductsViewDimens.tinyGap
 
 @Composable
 fun ProductsView(
@@ -35,11 +43,11 @@ fun ProductsView(
 ){
     ElevatedCard(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(smallGap)
             .fillMaxWidth()
             .clickable { navigateToDetail(product) },
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.elevatedCardElevation(4.dp),
+        shape = RoundedCornerShape(roundCorner),
+        elevation = CardDefaults.elevatedCardElevation(cardElevation),
         colors = CardDefaults.elevatedCardColors(
             containerColor = Color.White
         )
@@ -51,29 +59,29 @@ fun ProductsView(
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp)
+                    .height(imageSize)
             )
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(smallGap)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
                     Text(
                         text = product.title,
-                        fontSize = 18.sp,
+                        fontSize = mediumText,
                         fontWeight = FontWeight.Bold,
                         color = Color.Black
                     )
                     Text(
                         text = product.price.toString() + "€",
-                        fontSize = 14.sp,
+                        fontSize = smallText,
                         color = Color.Gray
                     )
                 }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(smallGap))
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -83,9 +91,9 @@ fun ProductsView(
                         text = product.category,
                         color = Color.Red,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
+                        fontSize = smallText,
                         modifier = Modifier
-                            .padding(horizontal = 12.dp, vertical = 6.dp)
+                            .padding(horizontal = mediumGap, vertical = tinyGap)
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -99,19 +107,30 @@ fun ProductsView(
                         Text(
                             text = product.rating.rate.toString(),
                             color = Color.Black,
-                            fontSize = 14.sp,
+                            fontSize = smallText,
                             fontWeight = FontWeight.Medium
                         )
                         Text(
                             text = "(${product.rating.count} reviews)",
                             color = Color.Gray,
-                            fontSize = 14.sp
+                            fontSize = smallText
                         )
                     }
                 }
             }
         }
     }
+}
+
+object ProductsViewDimens {
+    val tinyGap = 6.dp
+    val smallGap = 8.dp
+    val mediumGap = 12.dp
+    val smallText = 14.sp
+    val mediumText = 18.sp
+    val imageSize = 150.dp
+    val roundCorner = 8.dp
+    val cardElevation = 4.dp
 }
 
 @Preview(showBackground = true)
