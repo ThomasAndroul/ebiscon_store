@@ -1,5 +1,6 @@
 package com.example.ebisconstore.di
 
+import com.example.ebisconstore.auth.FakeStoreApi
 import com.example.ebisconstore.category.ProductApiService
 import com.example.ebisconstore.category.ProductRepository
 import com.example.ebisconstore.category.ProductRepositoryImpl
@@ -15,14 +16,27 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    private const val BASE_URL = "https://fakestoreapi.com/"
+
     @Provides
     @Singleton
-    fun provideApiService(): ProductApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://fakestoreapi.com")
+    fun provideRetrofit(): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideProductApiService(retrofit: Retrofit): ProductApiService {
         return retrofit.create(ProductApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideFakeStoreApi(retrofit: Retrofit): FakeStoreApi {
+        return retrofit.create(FakeStoreApi::class.java)
     }
 
     @Provides

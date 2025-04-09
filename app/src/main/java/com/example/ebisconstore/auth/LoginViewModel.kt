@@ -15,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val userManager: UserManager
+    private val userManager: UserManager,
+    private val apiService: FakeStoreApi
 ) : ViewModel() {
 
     data class LoginState(

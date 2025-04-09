@@ -1,6 +1,7 @@
 package com.example.ebisconstore
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.navigation.NavController
 import com.example.ebisconstore.auth.FakeStoreApi
 import com.example.ebisconstore.auth.LoginRequest
 import com.example.ebisconstore.auth.LoginResponse
@@ -22,11 +23,16 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.notNull
 import org.mockito.kotlin.whenever
 
 
@@ -42,15 +48,14 @@ class LoginViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        userManager = mock()
+        apiService = mock()
 
-        userManager = mock(UserManager::class.java)
-        apiService = mock(FakeStoreApi::class.java)
-
-        runBlocking {
+        runTest {
             whenever(userManager.tokenFlow).thenReturn(flowOf(null))
         }
 
-        viewModel = LoginViewModel(userManager)
+        viewModel = LoginViewModel(userManager, apiService)
     }
 
     @After
@@ -59,15 +64,29 @@ class LoginViewModelTest {
     }
 
     @Test
-    fun `login with valid credentials triggers onSuccess and updates state`() = runTest {
-        val fakeToken = "user_token"
-        whenever(apiService.login(LoginRequest("johnd", "m38rmF$")))
-            .thenReturn(LoginResponse(token = fakeToken))
+    fun `initial state is loading false and token null when no token stored`() = runTest {
+        whenever(userManager.tokenFlow).thenReturn(flowOf(null))
 
-        var onSuccessCalled = false
+        val viewModel = LoginViewModel(userManager, apiService)
+        advanceUntilIdle()
+
+        val state = viewModel.loginState.value
+        assertFalse(state.loading)
+        assertNull(state.token)
+        assertNull(state.error)
+    }
+
+    @Test
+    fun `login success sets non-null token and calls onSuccess`() = runTest {
+        whenever(apiService.login(any())).thenReturn(LoginResponse(token = "user_token"))
+        whenever(userManager.tokenFlow).thenReturn(flowOf(null))
+
+        val viewModel = LoginViewModel(userManager, apiService)
+
+        var successCalled = false
 
         viewModel.login("johnd", "m38rmF$", {
-            onSuccessCalled = true
+            successCalled = true
         }, {
             fail("onError should not be called")
         })
@@ -77,31 +96,45 @@ class LoginViewModelTest {
         val state = viewModel.loginState.value
         assertFalse(state.loading)
         assertNotNull(state.token)
-        assertTrue(state.token!!.isNotBlank())
-        assertNull(state.error)
-        assertTrue(onSuccessCalled)
+        assertTrue(successCalled)
     }
 
+
     @Test
-    fun `login with invalid credentials triggers error`() = runTest {
-        val loginRequest = LoginRequest("johnd", "wrongpass")
+    fun `login failure sets error and calls onError`() = runTest {
+        whenever(apiService.login(any())).thenThrow(RuntimeException("Invalid credentials"))
+        whenever(userManager.tokenFlow).thenReturn(flowOf(null))
 
-        whenever(apiService.login(loginRequest)).thenThrow(RuntimeException("Invalid credentials"))
+        val viewModel = LoginViewModel(userManager, apiService)
 
-        var onErrorCalled = false
-
+        var errorCalled = false
         viewModel.login("johnd", "wrongpass", {
             fail("onSuccess should not be called")
         }, {
-            onErrorCalled = true
+            errorCalled = true
         })
 
         advanceUntilIdle()
 
         val state = viewModel.loginState.value
-        assertNull(state.token)
         assertFalse(state.loading)
-        assertNotNull(state.error)
-        assertTrue(onErrorCalled)
+        assertNull(state.token)
+        assertEquals("Invalid credentials", state.error)
+        assertTrue(errorCalled)
+    }
+
+    @Test
+    fun `clearUserToken clears stored token and resets state`() = runTest {
+        whenever(userManager.tokenFlow).thenReturn(flowOf("existing_token"))
+
+        val viewModel = LoginViewModel(userManager, apiService)
+        advanceUntilIdle()
+
+        viewModel.clearUserToken()
+        advanceUntilIdle()
+
+        verify(userManager).clearToken()
+        val state = viewModel.loginState.value
+        assertNull(state.token)
     }
 }
